@@ -4,7 +4,7 @@
 
 # Create file handle
 def init_file():
-    return open('lib/' + input("Enter file name: "), 'r')
+    return open('lib/' + input("Enter file name: ") + '.txt', 'r')
 
 # Read in contents of the file, into a 9x9 list
 def init_board(fhand):
@@ -22,10 +22,40 @@ def init_board(fhand):
         i += 1
         j = 0
     print("Puzzle:" )
-    for row in board:
-        print(row)
+    print_board(board)
     return board
 
+# Print the board as a matrix
+def print_board(board):
+    for line in board:
+        print(line)
+
+# Check if number can be placed in board[row][column] on board legally
+def check_if_placeable(board, number, row, column):
+    # Check rows and columns
+    for i in range(9):
+        if board[row][i] == number and i != column:
+            return False
+        if board[i][column] == number and i != row:
+            return False
+    # Check the corresponding square
+    square_row = row - row % 3
+    square_col = column - column % 3
+    for i in range(3):
+        for j in range(3):
+            if square_row + i != row or square_col + j != column:
+                if board[square_row + i][square_col + j] == number:
+                    return False
+    return True
+
+# Count the remaining number of empty cells
+def count_remaining(board):
+    count = 0
+    for line in board:
+        for number in line:
+            if number == 0:
+                count += 1
+    return count
+
 if __name__ == "__main__":
-    fhand = init_file()
-    matrix = init_board(fhand)
+    board = init_board(init_file())
