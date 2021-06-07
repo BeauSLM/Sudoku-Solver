@@ -21,6 +21,7 @@ def init_board(fhand):
             j += 1
         i += 1
         j = 0
+    fhand.close()
     print("Puzzle:" )
     print_board(board)
     return board
@@ -57,5 +58,22 @@ def count_remaining(board):
                 count += 1
     return count
 
+# Simple recursive brute-force algorithm to solve the sudoku game
+def solve_board(board):
+    row = 0
+    column = 0
+    while row < 9:
+        while column < 9:
+            for number in range(1, 10):
+                if board[row][column] == 0:
+                    if check_if_placeable(board, number, row, column):
+                        board[row][column] = number
+                        solve_board(board)
+            column += 1
+        row += 1
+
 if __name__ == "__main__":
     board = init_board(init_file())
+    solve_board(board)
+    print("Final board:")
+    print_board(board)
