@@ -44,9 +44,10 @@ def check_if_placeable(board, number, row, column):
     square_col = column - column % 3
     for i in range(3):
         for j in range(3):
-            if square_row + i != row or square_col + j != column:
-                if board[square_row + i][square_col + j] == number:
-                    return False
+            if (square_row + i) == row and (square_col + j) == column:
+                continue
+            if board[square_row + i][square_col + j] == number:
+                return False
     return True
 
 # Count the remaining number of empty cells
@@ -60,17 +61,28 @@ def count_remaining(board):
 
 # Simple recursive brute-force algorithm to solve the sudoku game
 def solve_board(board):
-    row = 0
-    column = 0
-    while row < 9:
-        while column < 9:
-            for number in range(1, 10):
-                if board[row][column] == 0:
-                    if check_if_placeable(board, number, row, column):
-                        board[row][column] = number
-                        solve_board(board)
-            column += 1
-        row += 1
+    # Find and record and empty square
+    empty_row = -1
+    empty_col = -1
+    break_check = False
+    for row in range(9):
+        for column in range(9):
+            if (board[row][column] == 0):
+                empty_row = row
+                empty_col = column
+                break_check = True
+                break
+        if break_check:
+            break
+
+    # Place a number in the cell. Return if board is finished, set cell to zero if a solution isn't possible
+    for number in range(1, 10):
+        if check_if_placeable(board, number, empty_row, empty_col):
+            board[empty_row][empty_col] = number
+            solve_board(board)
+            if count_remaining(board) == 0:
+                return
+            board[row][column] = 0
 
 if __name__ == "__main__":
     board = init_board(init_file())
