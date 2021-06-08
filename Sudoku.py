@@ -59,6 +59,14 @@ def count_remaining(board):
                 count += 1
     return count
 
+def check_valid(board):
+    for row in range(9):
+        for column in range(9):
+            if board[row][column] > 0:
+                if not check_if_placeable(board, board[row][column], row, column):
+                    return False
+    return True
+
 # Simple recursive brute-force algorithm to solve the sudoku game
 def solve_board(board):
     # Find and record and empty square
@@ -86,6 +94,9 @@ def solve_board(board):
 
 if __name__ == "__main__":
     board = init_board(init_file())
+    if not check_valid(board):
+        print("Invalid puzzle, aborting. ")
+        exit(1)
     solve_board(board)
     print("Final board:")
     print_board(board)

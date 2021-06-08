@@ -38,5 +38,16 @@ class TestHelperMethods(unittest.TestCase):
         testboard = Sudoku.init_board(fhand)
         self.assertEqual(49, Sudoku.count_remaining(testboard))
 
+    def test_check_valid_true(self):
+        fhand = open('lib/puzzle1.txt', 'r')
+        testboard = Sudoku.init_board(fhand)
+        self.assertTrue(Sudoku.check_valid(testboard))
+
+    def test_check_valid_false(self):
+        fhand = open('lib/puzzle1.txt', 'r')
+        testboard = Sudoku.init_board(fhand)
+        testboard[0][0] = 1
+        self.assertFalse(Sudoku.check_valid(testboard))
+
 if __name__ == "__main__":
     unittest.main()
