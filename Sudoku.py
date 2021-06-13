@@ -67,8 +67,14 @@ def check_valid(board):
                     return False
     return True
 
+class calls:
+    calls = 0
+
+call_track = calls()
+
 # Simple recursive brute-force algorithm to solve the sudoku game
 def solve_board(board):
+    call_track.calls += 1
     # Find and record and empty square
     empty_row = -1
     empty_col = -1
@@ -100,3 +106,4 @@ if __name__ == "__main__":
     solve_board(board)
     print("Final board:")
     print_board(board)
+    print(call_track.calls , "number of calls")
