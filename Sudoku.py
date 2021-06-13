@@ -90,7 +90,7 @@ def solve_board(board):
             solve_board(board)
             if count_remaining(board) == 0:
                 return
-            board[row][column] = 0
+            board[empty_row][empty_col] = 0
 
 if __name__ == "__main__":
     board = init_board(init_file())
